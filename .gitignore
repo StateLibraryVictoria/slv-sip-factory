@@ -164,3 +164,5 @@ cython_debug/
 /json
 /output
 .vscode/
+input_dir/
+output_dir/
