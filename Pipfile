@@ -7,7 +7,6 @@ name = "pypi"
 lxml = "*"
 pytest = "*"
 pipfile = "*"
-validate-pyproject = {extras = ["all"], version = "*"}
 pydnx = {git = "https://github.com/StateLibraryVictoria/pydnx.git", editable = "true" }
 mets_dnx = {git = "https://github.com/StateLibraryVictoria/mets_dnx.git", editable = "true"}
 pymets = {git = "https://github.com/StateLibraryVictoria/pymets.git", editable = "true"}

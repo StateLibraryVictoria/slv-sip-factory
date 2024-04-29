@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "71f962c37542d101667851ac0a4988764ef2a0b516bc3a8512144500be2bec28"
+            "sha256": "59a4c24e9bc4a1ae2b371bc7a910c241bbb2c78aaf94294a8a9050d6a5d6e4a2"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -21,13 +21,6 @@
             ],
             "markers": "sys_platform == 'win32'",
             "version": "==0.4.6"
-        },
-        "fastjsonschema": {
-            "hashes": [
-                "sha256:3672b47bc94178c9f23dbb654bf47440155d4db9df5f7bc47643315f9c405cd0",
-                "sha256:e3126a94bdc4623d3de4485f8d468a12f02a67921315ddc87836d6e456dc789d"
-            ],
-            "version": "==2.19.1"
         },
         "iniconfig": {
             "hashes": [
@@ -263,24 +256,6 @@
             ],
             "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.10.2"
-        },
-        "trove-classifiers": {
-            "hashes": [
-                "sha256:49f40bb6a746b72a1cba4f8d55ee8252169cda0f70802e3fd24f04b7fb25a492",
-                "sha256:678bd6fcc5218d72e3304e27a608acc9b91e17bd00c3f3d8c968497c843ad98b"
-            ],
-            "version": "==2024.4.10"
-        },
-        "validate-pyproject": {
-            "extras": [
-                "all"
-            ],
-            "hashes": [
-                "sha256:2d60282f23559cfa1328e4a2c308c8065cba8008a80c8898352355fef66517ca",
-                "sha256:597d9ecb3c8d125d800cb243c53e3534e8a4f0360c9807076fc08c276a7b6869"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.16"
         }
     },
     "develop": {}
