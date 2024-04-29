@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "41e4e74bf9ca7b835c2b1b9f453385409eaaf2571db7df4dce420f9e7685c559"
+            "sha256": "71f962c37542d101667851ac0a4988764ef2a0b516bc3a8512144500be2bec28"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -21,6 +21,13 @@
             ],
             "markers": "sys_platform == 'win32'",
             "version": "==0.4.6"
+        },
+        "fastjsonschema": {
+            "hashes": [
+                "sha256:3672b47bc94178c9f23dbb654bf47440155d4db9df5f7bc47643315f9c405cd0",
+                "sha256:e3126a94bdc4623d3de4485f8d468a12f02a67921315ddc87836d6e456dc789d"
+            ],
+            "version": "==2.19.1"
         },
         "iniconfig": {
             "hashes": [
@@ -192,6 +199,11 @@
             "markers": "python_version >= '3.6'",
             "version": "==5.2.1"
         },
+        "mets-dnx": {
+            "editable": "true",
+            "git": "https://github.com/StateLibraryVictoria/mets_dnx.git",
+            "ref": "f141a6db96890c6ac48a260c6127c9faa9416cd9"
+        },
         "packaging": {
             "hashes": [
                 "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5",
@@ -215,6 +227,21 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.5.0"
         },
+        "pydc": {
+            "editable": "true",
+            "git": "https://github.com/StateLibraryVictoria/pydc.git",
+            "ref": "13c5037c6dbe09c32b4cf82c80dff54d9de798b4"
+        },
+        "pydnx": {
+            "editable": "true",
+            "git": "https://github.com/StateLibraryVictoria/pydnx.git",
+            "ref": "341dff8a05062d3e65d35a319dab7c12254dc866"
+        },
+        "pymets": {
+            "editable": "true",
+            "git": "https://github.com/StateLibraryVictoria/pymets.git",
+            "ref": "36ed867c07bd885862efbaf3b39874ce1dcc6196"
+        },
         "pytest": {
             "hashes": [
                 "sha256:1733f0620f6cda4095bbf0d9ff8022486e91892245bb9e7d5542c018f612f233",
@@ -224,6 +251,11 @@
             "markers": "python_version >= '3.8'",
             "version": "==8.2.0"
         },
+        "rosetta-sip-factory": {
+            "editable": "true",
+            "git": "https://github.com/StateLibraryVictoria/rosetta_sip_factory.git",
+            "ref": "7e09b86efb6332db4be9b1141fa4d7803f6cf1c7"
+        },
         "toml": {
             "hashes": [
                 "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
@@ -231,6 +263,24 @@
             ],
             "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.10.2"
+        },
+        "trove-classifiers": {
+            "hashes": [
+                "sha256:49f40bb6a746b72a1cba4f8d55ee8252169cda0f70802e3fd24f04b7fb25a492",
+                "sha256:678bd6fcc5218d72e3304e27a608acc9b91e17bd00c3f3d8c968497c843ad98b"
+            ],
+            "version": "==2024.4.10"
+        },
+        "validate-pyproject": {
+            "extras": [
+                "all"
+            ],
+            "hashes": [
+                "sha256:2d60282f23559cfa1328e4a2c308c8065cba8008a80c8898352355fef66517ca",
+                "sha256:597d9ecb3c8d125d800cb243c53e3534e8a4f0360c9807076fc08c276a7b6869"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==0.16"
         }
     },
     "develop": {}
