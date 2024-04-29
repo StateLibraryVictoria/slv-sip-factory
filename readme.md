@@ -23,10 +23,21 @@ This project uses Pipenv to manage external libraries (eg. lxml) and git submodu
 - To also clone dependencies as submodules (optional): 
     - Run the commands `git submodule init` then `git submodule update`
 
+## Creating SIPS
+
+Basic METS SIPs can be created using `create_sip.py` using the following steps:
+
+- Create an input directory and add path to the .env file. (See `env.example` for an example file.)
+- Create an output directory and add path to the .env file.
+- Save the .env file.
+- Stage folders to be processed in the input directory. Folder titles should have the structure `{preliminary identifier}_{title}_{YYYYMMDD}`
+- Launch Pipenv shell using `py -m pipenv shell` or similar.
+- Run `py create_sip.py`
+- Check the log file `create_sip.log` for details regarding processing.
+
 ## To do:
 
-- Create required helper functions.
-- Create build script.
+- Create file renaming extension.
 
 ## Updating submodules
 
