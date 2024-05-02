@@ -20,6 +20,8 @@ def move_rename_files(root_directory, mets_filename="mets.xml"):
 
     # Set the directory for renamed files.
     rename_dir = os.path.join(root_directory,"content", "streams", 'renamed')
+    if os.path.exists(rename_dir):
+         rename_dir = os.path.join(rename_dir, "slv_rosetta_sip_preparation")
 
     # Iterate through files and rename them if they are not ASCII. Update the href so that the file can be resolved.
     for fl in mets.findall(".//{http://www.loc.gov/METS/}FLocat"):
