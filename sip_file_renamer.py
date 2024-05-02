@@ -4,10 +4,7 @@ import logging
 from lxml import etree as ET
 
 ## setup logging
-logger = logging.getLogger(__file__)
-format = '%(name)s - %(levelname)s : %(asctime)s - %(filename)s  - %(message)s'
-logging.basicConfig(filename="debug_sip_file_renamer.log", level=logging.DEBUG, format=format)
-
+logger = logging.getLogger()
 
 def move_rename_files(root_directory, mets_filename="mets.xml"):
     """A function that takes an existing SIP, checks for non-ascii filenames, creates a renamed
