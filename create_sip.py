@@ -2,10 +2,12 @@ import os
 import logging
 from sys import exit
 from rosetta_sip_factory import sip_builder
+from sip_file_renamer import move_rename_files
 
 # Setup logging
 logger = logging.getLogger(__file__)
-logging.basicConfig(filename="create_sip.log", level=logging.INFO)
+format = '%(name)s - %(levelname)s : %(asctime)s %(filename)s - %(funcname)s - %(message)s'
+logging.basicConfig(filename="create_sip.log", level=logging.INFO, format=format)
 logger.info("Started")
 
 # Get env variables
@@ -76,7 +78,9 @@ for folder in folders:
   logging.info("Started building SIP.")
   try:
     sip_builder.build_sip(
-        ie_dmd_dict=[{'dc:title': folder # title of IE, becomes dc:alternative once split.
+        ie_dmd_dict=[{'dc:title': folder, # title of IE, becomes dc:alternative once split.
+                      'rosetta:externalId': pi,
+                      'rosetta:externalSystem': "ArchivesSpace"
                     }],
         pres_master_dir=input_path,
         generalIECharacteristics=[{'IEEntityType': 'None',
@@ -95,3 +99,8 @@ for folder in folders:
      logger.info("Building SIP failed.")
      logger.error(f"Error building SIP: {e}")
 
+# Rename ascii files in output directory.
+for folder in folders:
+   logger.info(f"Checking output folder {folder} for unicode characters.")
+   output_path = os.path.join(OUTPUT_DIR, folder)
+   move_rename_files(output_path)
