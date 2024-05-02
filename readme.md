@@ -41,4 +41,12 @@ Basic METS SIPs can be created using `create_sip.py` using the following steps:
 
 ## Updating submodules
 
-Not clear how useful this functionality will be, however dependencies were retained as submodules to facilitate development. They may be dropped later. Keeping them separate as submodules allows for updates to be pushed to the original repositories.
+This still isn't working in an ideal way, but the following steps are required to update the installed versions of a submodule once you update it.
+- To update a submodule, open git within that module to commit updates to the SLV Fork of that repo. 
+- Make your changes and commit.
+- In the main repo, open the `Pipfile`
+- Cut the row for the local repository, but keep it handy. Save the file.
+- Run   `py -m pipenv install`
+- Add the row for the local repository back into the `Pipfile` and save.
+- Run `py -m pipenv install`
+This will install the updates into the local repository.
