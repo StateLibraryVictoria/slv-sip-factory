@@ -6,7 +6,7 @@ from sip_file_renamer import move_rename_files
 
 # Setup logging
 logger = logging.getLogger(__file__)
-format = '%(name)s - %(levelname)s : %(asctime)s %(filename)s - %(funcname)s - %(message)s'
+format = '%(name)s - %(levelname)s : %(asctime)s  %(filename)s - %(message)s'
 logging.basicConfig(filename="create_sip.log", level=logging.INFO, format=format)
 logger.info("Started")
 
