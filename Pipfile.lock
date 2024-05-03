@@ -194,7 +194,7 @@
         "mets-dnx": {
             "editable": "true",
             "git": "https://github.com/StateLibraryVictoria/mets_dnx.git",
-            "ref": "f141a6db96890c6ac48a260c6127c9faa9416cd9"
+            "ref": "489715ebe9ca5ff0c846cbdc6f1efb5d00a43f3f"
         },
         "packaging": {
             "hashes": [
@@ -227,12 +227,12 @@
         "pydnx": {
             "editable": "true",
             "git": "https://github.com/StateLibraryVictoria/pydnx.git",
-            "ref": "341dff8a05062d3e65d35a319dab7c12254dc866"
+            "ref": "64dcc869e666cf5f11e4bece3e916499f8f85d82"
         },
         "pymets": {
             "editable": "true",
             "git": "https://github.com/StateLibraryVictoria/pymets.git",
-            "ref": "36ed867c07bd885862efbaf3b39874ce1dcc6196"
+            "ref": "ba5e3c1c6688a047e1b097a532316fe02af71999"
         },
         "pytest": {
             "hashes": [
@@ -246,7 +246,7 @@
         "rosetta-sip-factory": {
             "editable": "true",
             "git": "https://github.com/StateLibraryVictoria/rosetta_sip_factory.git",
-            "ref": "7e09b86efb6332db4be9b1141fa4d7803f6cf1c7"
+            "ref": "eeedb0635cb4be8f7931f5de90a8745c257b6437"
         },
         "toml": {
             "hashes": [
