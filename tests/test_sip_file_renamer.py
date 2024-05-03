@@ -13,6 +13,7 @@ sip_list = os.listdir(input_path)
 print(sip_list)
 output_path = os.path.join("tests","test_data","output")
 output_renamed_path = os.path.join("tests","test_data","output_renamed")
+percent_encoding_path = os.path.join("tests","test_data","percent_encoding")
 """validation_schema_file = os.path.join("tests", "test_data", "mets_schema.xsd")
 with open(validation_schema_file, 'r', encoding='utf-8') as file:
      xml_schema_doc = ET.parse(file)
@@ -103,3 +104,34 @@ def test_all_files_are_in_both_locations(input_folder):
     for root, dirs, files in os.walk(renamed_output):
         numOutput = len(files)
     assert(numInput == numOutput)
+
+def test_percent_encoding_for_ascii_filenames():
+    input_dir = percent_encoding_path
+    output_dir = os.path.join("tests","test_data","percent_output")
+    title = "Test percent encoding"
+
+    # first off, delete anything that's in the output folder
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+        os.makedirs(output_dir)
+    ie_dc_dict = {"dc:title": title}
+    sb.build_sip(
+        ie_dmd_dict=ie_dc_dict,
+        pres_master_dir=input_dir,
+        input_dir=input_dir,
+        generalIECharacteristics=[
+                {'submissionReason': 'bornDigitalContent',
+                 'IEEntityType': 'periodicIE'}
+                ],
+        output_dir=output_dir
+        )
+    move_rename_files(output_dir)
+    mets_file = os.path.join(output_dir, "content", "mets.xml")
+    mets = ET.parse(mets_file)
+    expected = ["New%20Text%20Document.txt", "something%25sign/This%20That.txt", "something%25sign/This%2520That.txt"]
+    output = []
+    for fl in mets.findall(".//{http://www.loc.gov/METS/}FLocat"):
+            output.append(fl.attrib["{http://www.w3.org/1999/xlink}href"])
+    print(output)
+    assert(expected == output)
+

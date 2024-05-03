@@ -1,6 +1,8 @@
 import os
 import shutil
 import logging
+import urllib
+import urllib.parse
 from lxml import etree as ET
 
 ## setup logging
@@ -40,6 +42,8 @@ def move_rename_files(root_directory, mets_filename="mets.xml"):
                 except Exception as e:
                     print(f"Error copying file: {root+ext}. Error message: {e}")
                     logger.error(f"Error copying file: {root+ext}. Error message: {e}")
+            else: # Percent encodes all other refs.
+                fl.attrib["{http://www.w3.org/1999/xlink}href"] = urllib.parse.quote(fl.attrib["{http://www.w3.org/1999/xlink}href"], encoding='utf-8')
     with open(mets_file, 'wb') as mf:
          mf.write(ET.tostring(mets, xml_declaration=True, encoding='utf-8'))
     return None
