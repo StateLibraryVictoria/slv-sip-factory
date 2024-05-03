@@ -68,6 +68,7 @@ for folder in folders:
   # Check output directory does not exist.
   if os.path.exists(output_path):
      print(f"Warning. Output path for load folder {folder} already exists. Skipping folder.")
+     logger.info(f"Folder: {folder} already exists at output location. Skipped.")
      continue
 
   # Get metadata from folder name
