@@ -55,7 +55,7 @@ This still isn't working in an ideal way, but the following steps are required t
 - Run `py -m pipenv install`
 This will install the updates into the local repository.
 
-## Digarams
+## Diagrams
 
 ### Activity diagram
 
