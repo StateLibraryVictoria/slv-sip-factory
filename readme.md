@@ -1,6 +1,6 @@
 # Overview
 
-A script that builds on National Library of New Zealand's rosetta-sip-factory to create Submission Information Packages for State Library Victoria's digital collections.
+A script that builds on National Library of New Zealand's [rosetta-sip-factory](https://github.com/NLNZDigitalPreservation/rosetta_sip_factory) to create Submission Information Packages for State Library Victoria's digital collections. See the diagrams section at the end of this guide for an overview of program logic.
 
 ## Dependencies
 
@@ -14,7 +14,7 @@ A script that builds on National Library of New Zealand's rosetta-sip-factory to
 
 ## Getting started
 
-This project uses Pipenv to manage external libraries (eg. lxml) and git submodule to manage other dependencies which may require or recieve updates over time (eg. pymets, rosetta_sip_factory).
+This project uses Pipenv to manage external libraries including dependencies that exist as repositories on Github only. Git submodule has also been used to import those projects for further development.
 
 - Basic setup: 
     - Create an empty repository.
@@ -27,17 +27,21 @@ This project uses Pipenv to manage external libraries (eg. lxml) and git submodu
 
 Basic METS SIPs can be created using `create_sip.py` using the following steps:
 
-- Create an input directory and add path to the .env file. (See `env.example` for an example file.)
-- Create an output directory and add path to the .env file.
-- Save the .env file.
+- Create an input directory and add path to the `.env` file. (See `env.example` for an example file.)
+- Create an output directory and add path to the `.env` file.
+- Save the `.env` file.
 - Stage folders to be processed in the input directory. Folder titles should have the structure `{preliminary identifier}_{title}_{YYYYMMDD}`
 - Launch Pipenv shell using `py -m pipenv shell` or similar.
 - Run `py create_sip.py`
 - Check the log file `create_sip.log` for details regarding processing.
 
-## To do:
+Current configuration assumes:
+- The folder titles have a preliminary identifier as the first part. The preliminary identifier does not contain underscores.
+- The preliminary identifier is associated with an ArchivesSpace record for the material.
 
-- Create file renaming extension.
+### File renaming
+
+Files are renamed during post-processing of the METS manifest to ensure the files can be located by Rosetta. The original filenames and folder paths are captured as metadata in the METS manifest, which is reapplied to the file upon download.
 
 ## Updating submodules
 
@@ -50,3 +54,13 @@ This still isn't working in an ideal way, but the following steps are required t
 - Add the row for the local repository back into the `Pipfile` and save.
 - Run `py -m pipenv install`
 This will install the updates into the local repository.
+
+## Digarams
+
+### Activity diagram
+
+![activity diagram](docs/sip_file_renamer-Activity_diagram.drawio.svg)
+
+### Program logic
+
+![program logic diagram](docs/sip_file_renamer-Logic_diagram.drawio.svg)
