@@ -1,9 +1,9 @@
 import os
 import shutil
 import logging
-import urllib
 import urllib.parse
 from lxml import etree as ET
+from pathlib import PurePath
 
 ## setup logging
 logger = logging.getLogger()
@@ -31,7 +31,7 @@ def move_rename_files(root_directory, mets_filename="mets.xml"):
             root, ext = os.path.splitext(fl.attrib["{http://www.w3.org/1999/xlink}href"])
             if not root.isascii():
                 logger.info(f"File: {root + ext} with file id {fl_id} contains non-ascii characters. File will be renamed.")
-                fl.attrib["{http://www.w3.org/1999/xlink}href"] = os.path.join("renamed",fl_id + ext)
+                fl.attrib["{http://www.w3.org/1999/xlink}href"] = PurePath(os.path.join("renamed",fl_id + ext)).as_posix()
                 logger.debug(f"METS updated for file {root+ext}")
                 if not os.path.exists(rename_dir):
                      os.mkdir(rename_dir)
