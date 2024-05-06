@@ -14,12 +14,14 @@ A script that builds on National Library of New Zealand's [rosetta-sip-factory](
 
 ## Getting started
 
-This project uses Pipenv to manage external libraries including dependencies that exist as repositories on Github only. 
+This project uses Pipenv to manage external libraries including dependencies that exist as repositories on Github only. Git submodule has also been used to import those projects for further development.
 
 - Basic setup: 
     - Create an empty repository.
     - Add this repository as origin using `git add remote origin <link to repo>`
     - install dependencies using `Pipenv install`.
+- To also clone dependencies as submodules (optional): 
+    - Run the commands `git submodule init` then `git submodule update`
 
 ## Creating SIPS
 
@@ -41,7 +43,19 @@ Current configuration assumes:
 
 Files are renamed during post-processing of the METS manifest to ensure the files can be located by Rosetta. The original filenames and folder paths are captured as metadata in the METS manifest, which is reapplied to the file upon download.
 
-## Digarams
+## Updating submodules
+
+This still isn't working in an ideal way, but the following steps are required to update the installed versions of a submodule once you update it.
+- To update a submodule, open git within that module to commit updates to the SLV Fork of that repo. 
+- Make your changes and commit.
+- In the main repo, open the `Pipfile`
+- Cut the row for the local repository, but keep it handy. Save the file.
+- Run   `py -m pipenv install`
+- Add the row for the local repository back into the `Pipfile` and save.
+- Run `py -m pipenv install`
+This will install the updates into the local repository.
+
+## Diagrams
 
 ### Activity diagram
 
