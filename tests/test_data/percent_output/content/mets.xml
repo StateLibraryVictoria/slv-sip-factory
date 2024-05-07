@@ -96,8 +96,8 @@
                 <key id="fileOriginalName">New Text Document.txt</key>
                 <key id="fileOriginalPath">New Text Document.txt</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-05-03T11:30:56</key>
-                <key id="fileModificationDate">2024-05-03T11:30:56</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -141,10 +141,10 @@
               <record>
                 <key id="label">This That</key>
                 <key id="fileOriginalName">This That.txt</key>
-                <key id="fileOriginalPath">something%sign\This That.txt</key>
+                <key id="fileOriginalPath">something%sign/This That.txt</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-05-03T11:31:04</key>
-                <key id="fileModificationDate">2024-05-03T11:31:17</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -188,10 +188,10 @@
               <record>
                 <key id="label">This%20That</key>
                 <key id="fileOriginalName">This%20That.txt</key>
-                <key id="fileOriginalPath">something%sign\This%20That.txt</key>
+                <key id="fileOriginalPath">something%sign/This%20That.txt</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-05-03T11:31:04</key>
-                <key id="fileModificationDate">2024-05-03T11:31:04</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">

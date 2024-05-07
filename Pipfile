@@ -8,9 +8,9 @@ lxml = "*"
 pytest = "*"
 pipfile = "*"
 pydnx = {git = "https://github.com/StateLibraryVictoria/pydnx.git", editable = "true" }
-mets_dnx = {git = "https://github.com/StateLibraryVictoria/mets_dnx.git", editable = "true"}
 pymets = {git = "https://github.com/StateLibraryVictoria/pymets.git", editable = "true"}
 pydc = {git = "https://github.com/StateLibraryVictoria/pydc.git", editable = "true"}
 rosetta_sip_factory = {git = "https://github.com/StateLibraryVictoria/rosetta_sip_factory.git", editable = "true"}
+mets-dnx = {git = "https://github.com/StateLibraryVictoria/mets_dnx.git", editable = "true"}
 
 [dev-packages]

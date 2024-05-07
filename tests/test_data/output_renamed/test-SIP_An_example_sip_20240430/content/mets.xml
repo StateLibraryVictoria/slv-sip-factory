@@ -96,8 +96,8 @@
                 <key id="fileOriginalName">קובץ מחשב לדוגמה.doc</key>
                 <key id="fileOriginalPath">קובץ מחשב לדוגמה.doc</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:15:21</key>
-                <key id="fileModificationDate">2024-04-30T10:15:43</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -143,8 +143,8 @@
                 <key id="fileOriginalName">یک نمونه فایل کامپیوتری.xlsx</key>
                 <key id="fileOriginalPath">یک نمونه فایل کامپیوتری.xlsx</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:15:21</key>
-                <key id="fileModificationDate">2024-04-30T10:15:21</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -190,8 +190,8 @@
                 <key id="fileOriginalName">计算机文件示例.doc</key>
                 <key id="fileOriginalPath">计算机文件示例.doc</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:14:56</key>
-                <key id="fileModificationDate">2024-04-30T10:14:56</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -237,8 +237,8 @@
                 <key id="fileOriginalName">😂😂😂.msg</key>
                 <key id="fileOriginalPath">😂😂😂.msg</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:16:17</key>
-                <key id="fileModificationDate">2024-04-30T10:16:17</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -276,16 +276,16 @@
   <mets:fileSec>
     <mets:fileGrp USE="VIEW" ID="rep1" ADMID="rep1-amd">
       <mets:file ID="fid1-1" ADMID="fid1-1-amd">
-        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed\fid1-1.doc"/>
+        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed/fid1-1.doc"/>
       </mets:file>
       <mets:file ID="fid2-1" ADMID="fid2-1-amd">
-        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed\fid2-1.xlsx"/>
+        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed/fid2-1.xlsx"/>
       </mets:file>
       <mets:file ID="fid3-1" ADMID="fid3-1-amd">
-        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed\fid3-1.doc"/>
+        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed/fid3-1.doc"/>
       </mets:file>
       <mets:file ID="fid4-1" ADMID="fid4-1-amd">
-        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed\fid4-1.msg"/>
+        <mets:FLocat xmlns:xlin="http://www.w3.org/1999/xlink" LOCTYPE="URL" xlin:href="renamed/fid4-1.msg"/>
       </mets:file>
     </mets:fileGrp>
   </mets:fileSec>

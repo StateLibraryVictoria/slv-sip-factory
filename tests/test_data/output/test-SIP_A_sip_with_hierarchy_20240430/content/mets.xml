@@ -93,10 +93,10 @@
               <record>
                 <key id="label">an_example_file</key>
                 <key id="fileOriginalName">an_example_file.txt</key>
-                <key id="fileOriginalPath">ascii_folder\an_example_file.txt</key>
+                <key id="fileOriginalPath">ascii_folder/an_example_file.txt</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:18:30</key>
-                <key id="fileModificationDate">2024-04-30T10:18:30</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -140,10 +140,10 @@
               <record>
                 <key id="label">קובץ מחשב לדוגמה</key>
                 <key id="fileOriginalName">קובץ מחשב לדוגמה.doc</key>
-                <key id="fileOriginalPath">multi_level_folder\קובץ מחשב לדוגמה.doc</key>
+                <key id="fileOriginalPath">multi_level_folder/קובץ מחשב לדוגמה.doc</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:15:21</key>
-                <key id="fileModificationDate">2024-04-30T10:15:43</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -187,10 +187,10 @@
               <record>
                 <key id="label">یک نمونه فایل کامپیوتری</key>
                 <key id="fileOriginalName">یک نمونه فایل کامپیوتری.xlsx</key>
-                <key id="fileOriginalPath">multi_level_folder\level_2\یک نمونه فایل کامپیوتری.xlsx</key>
+                <key id="fileOriginalPath">multi_level_folder/level_2/یک نمونه فایل کامپیوتری.xlsx</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:15:21</key>
-                <key id="fileModificationDate">2024-04-30T10:15:21</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -234,10 +234,10 @@
               <record>
                 <key id="label">计算机文件示例</key>
                 <key id="fileOriginalName">计算机文件示例.doc</key>
-                <key id="fileOriginalPath">multi_level_folder\level_2\计算机文件示例.doc</key>
+                <key id="fileOriginalPath">multi_level_folder/level_2/计算机文件示例.doc</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:14:56</key>
-                <key id="fileModificationDate">2024-04-30T10:14:56</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -281,10 +281,10 @@
               <record>
                 <key id="label">holiday2003</key>
                 <key id="fileOriginalName">holiday2003.jpg</key>
-                <key id="fileOriginalPath">👪\holiday2003.jpg</key>
+                <key id="fileOriginalPath">👪/holiday2003.jpg</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:18:08</key>
-                <key id="fileModificationDate">2024-04-30T10:18:08</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">
@@ -328,10 +328,10 @@
               <record>
                 <key id="label">😂😂😂</key>
                 <key id="fileOriginalName">😂😂😂.msg</key>
-                <key id="fileOriginalPath">👪\😂😂😂.msg</key>
+                <key id="fileOriginalPath">👪/😂😂😂.msg</key>
                 <key id="fileSizeBytes">0</key>
-                <key id="fileCreationDate">2024-04-30T10:16:17</key>
-                <key id="fileModificationDate">2024-04-30T10:16:17</key>
+                <key id="fileCreationDate">2024-05-06T07:58:57</key>
+                <key id="fileModificationDate">2024-05-06T07:58:57</key>
               </record>
             </section>
             <section id="fileFixity">

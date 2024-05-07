@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "59a4c24e9bc4a1ae2b371bc7a910c241bbb2c78aaf94294a8a9050d6a5d6e4a2"
+            "sha256": "fc75fffd8f4b6f3f4f21004a609552268a91e49d0f5e491775a7a7e5c87b8a0a"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -194,7 +194,7 @@
         "mets-dnx": {
             "editable": "true",
             "git": "https://github.com/StateLibraryVictoria/mets_dnx.git",
-            "ref": "489715ebe9ca5ff0c846cbdc6f1efb5d00a43f3f"
+            "ref": "5397578de867a9748018948b9c8689bb166f78b4"
         },
         "packaging": {
             "hashes": [
