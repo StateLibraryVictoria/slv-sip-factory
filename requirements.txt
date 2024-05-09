@@ -1,17 +1,14 @@
 -i https://pypi.org/simple
 colorama==0.4.6; sys_platform == 'win32'
-fastjsonschema==2.19.1
 iniconfig==2.0.0; python_version >= '3.7'
 lxml==5.2.1; python_version >= '3.6'
--e git+https://github.com/StateLibraryVictoria/mets_dnx.git@f141a6db96890c6ac48a260c6127c9faa9416cd9#egg=mets-dnx
+-e git+https://github.com/StateLibraryVictoria/mets_dnx.git@5397578de867a9748018948b9c8689bb166f78b4#egg=mets-dnx
 packaging==24.0; python_version >= '3.7'
 pipfile==0.0.2
 pluggy==1.5.0; python_version >= '3.8'
--e git+https://github.com/StateLibraryVictoria/pydc.git@13c5037c6dbe09c32b4cf82c80dff54d9de798b4#egg=pydc
--e git+https://github.com/StateLibraryVictoria/pydnx.git@341dff8a05062d3e65d35a319dab7c12254dc866#egg=pydnx
--e git+https://github.com/StateLibraryVictoria/pymets.git@36ed867c07bd885862efbaf3b39874ce1dcc6196#egg=pymets
+-e git+https://github.com/StateLibraryVictoria/pydc.git@0e923ce868d52c045762cd28a4960dfc37142806#egg=pydc
+-e git+https://github.com/StateLibraryVictoria/pydnx.git@64dcc869e666cf5f11e4bece3e916499f8f85d82#egg=pydnx
+-e git+https://github.com/StateLibraryVictoria/pymets.git@ba5e3c1c6688a047e1b097a532316fe02af71999#egg=pymets
 pytest==8.2.0; python_version >= '3.8'
--e git+https://github.com/StateLibraryVictoria/rosetta_sip_factory.git@7e09b86efb6332db4be9b1141fa4d7803f6cf1c7#egg=rosetta-sip-factory
+-e git+https://github.com/StateLibraryVictoria/rosetta_sip_factory.git@eeedb0635cb4be8f7931f5de90a8745c257b6437#egg=rosetta-sip-factory
 toml==0.10.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
-trove-classifiers==2024.4.10
-validate-pyproject[all]==0.16; python_version >= '3.6'
