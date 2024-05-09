@@ -85,6 +85,14 @@ for folder in folders:
 
     # Get metadata from folder name
     parts = folder.split("_")
+    if len(parts) == 1:
+        print(
+            "Warning, folder title"
+            + folder
+            + "is unable to be parsed to identifier and title elements. Restage folder with folder title {identifier}_{name}_{YYYYMMDD}"
+        )
+        logger.info(f"Folder: {folder} has problematic name. Skipped.")
+        continue
     pi = parts[0]  # Preliminary identifier
     title = " ".join(parts[1:])  # Title part
     logging.info("Preliminary identifier: " + pi + ", title: " + title)
