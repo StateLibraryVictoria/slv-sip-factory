@@ -70,4 +70,7 @@ def generate_dcxml_record(preliminary_id, system, sip_title):
         "dc:title": sip_title,
     }
     dc_record = dc_factory.build_dc_record(dc_dict)
+    logger.info(
+        f"Generated DC record with the following fields. <rosetta:externalId>: {preliminary_id}, <rosetta:externalSystem>: {system}, <dc:title>: {sip_title}"
+    )
     return dc_record
