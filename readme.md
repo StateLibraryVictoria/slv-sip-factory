@@ -19,7 +19,7 @@ This project uses Pipenv to manage external libraries including dependencies tha
 - Basic setup: 
     - Create an empty repository.
     - Add this repository as origin using `git add remote origin <link to repo>`
-    - install dependencies using `Pipenv install`.
+    - install dependencies using `Pipenv install`. If testing on a virtual venv environment then use `pip install -r requirements.txt`
 
 ## Creating SIPS
 
