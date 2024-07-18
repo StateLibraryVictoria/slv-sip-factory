@@ -2,7 +2,7 @@ import os
 import logging
 from sys import exit
 from rosetta_sip_factory import sip_builder
-from sip_file_renamer import *
+from src.sip_file_renamer import *
 
 # Setup logging
 logger = logging.getLogger(__file__)
