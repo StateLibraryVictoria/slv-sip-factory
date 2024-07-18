@@ -5,7 +5,7 @@ from lxml import etree as ET
 import pytest
 
 from rosetta_sip_factory import sip_builder as sb
-from sip_file_renamer import *
+from src.sip_file_renamer import *
 
 # Setup test data.
 input_path = os.path.join("tests", "test_data", "input")
