@@ -4,10 +4,40 @@ import logging
 import urllib.parse
 from lxml import etree as ET
 from pathlib import PurePath
-from pydc import factory as dc_factory
+from pydc.pydc import DCRecord
 
 ## setup logging
 logger = logging.getLogger()
+
+
+class RosettaDCRecord(DCRecord):
+    def __init__(self):
+        local_nsmap = {
+            "dc": "http://purl.org/dc/elements/1.1/",
+            "dcterms": "http://purl.org/dc/terms/",
+            "xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "rosetta": "http://www.exlibrisgroup.com/dps",
+        }
+        super(DCRecord, self).__init__(nsmap=local_nsmap)
+
+    def add_ros_field(self, ros_key, ros_value):
+        tag = ros_key
+        tag_components = tag.split(":")
+        tag = tag_components[0]
+        tag_name = tag_components[1]
+        element = ET.Element("{%s}%s" % ("http://www.exlibrisgroup.com/dps", tag_name))
+        element.text = ros_value
+        self.append(element)
+
+
+def build_ros_dc_record(dc_dict):
+    dc_record = RosettaDCRecord()
+    for key in dc_dict.keys():
+        if key.startswith("rosetta"):
+            dc_record.add_ros_field(key, dc_dict[key])
+        else:
+            dc_record.add_field(key, dc_dict[key])
+    return dc_record
 
 
 def move_rename_files(root_directory, mets_filename="mets.xml"):
@@ -64,12 +94,19 @@ def move_rename_files(root_directory, mets_filename="mets.xml"):
 
 def generate_dcxml_record(preliminary_id, system, sip_title):
     """Generates a DC record with SIP metadata to be written to dc.xml file"""
-    dc_dict = {
+    full_dc_dict = {
         "rosetta:externalId": preliminary_id,
         "rosetta:externalSystem": system,
         "dc:title": sip_title,
     }
-    dc_record = dc_factory.build_dc_record(dc_dict)
+    dc_dict = {
+        "dc:title": sip_title,
+    }
+    logging.error(dc_dict)
+    dc_record = build_ros_dc_record(full_dc_dict)
+    # dc_record.add_ros_field("rosetta:externalId", preliminary_id)
+    # dc_record.add_ros_field("rosetta:externalSystem", system)
+    # dc_record.add_field("dc:title", sip_title)
     logger.info(
         f"Generated DC record with the following fields. <rosetta:externalId>: {preliminary_id}, <rosetta:externalSystem>: {system}, <dc:title>: {sip_title}"
     )
