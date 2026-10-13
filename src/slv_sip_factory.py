@@ -75,7 +75,8 @@ class DepositEvent(ABC):
             df["Outcome"] = df["Outcome"].replace("Fail", "Failure")
         if "Errors" in col_names:
             df["Errors"] = df["Errors"].replace("", "No errors.")
-        for id in ["TransferID", "OutcomeIdentifier"]:
+            df["Errors"] = df["Errors"].fillna("No errors.")
+        for id in ["TransferID", "OutcomeIdentifier", "PayloadOxum"]:
             if id in col_names:
                 df[id] = df[id].astype(str)
 
@@ -97,8 +98,9 @@ class TransferEvent(DepositEvent):
         outcome_folder = event_df["OutcomeFolderTitle"].to_list()
         collection_id = event_df["CollectionIdentifier"].to_list()
         contact = event_df["ContactName"].to_list()
-        files = event_df["FileCount"].to_list()
-        bytes = event_df["Bytes"].to_list()
+        payload_oxum = event_df["PayloadOxum"].to_list()
+        files = [x.split(".")[1] for x in payload_oxum]
+        bytes = [x.split(".")[0] for x in payload_oxum]
         event_type = "PRE-DEPOSIT"
         events = []
         for i in range(len(action_ids)):
@@ -113,7 +115,16 @@ class TransferEvent(DepositEvent):
                     "eventOutcomeDetail1": f"Files: {files[i]}, bytes: {bytes[i]}, transferred by: {contact[i]}, with collection id: {collection_id[i]}. Resulted in folder: {outcome_folder[i]}. Transfer completed using: {bagit_agent}",
                 }
             )
-        logging.error("Transfer events not implemented")
+        events.append(
+            {
+                "eventType": event_type,
+                "eventIdentifierType": "bagitWorkflowAssignBagUUID",
+                "eventIdentifierValue": f"bagitWorkflow-{self.uuid}",
+                "eventDescription": f"Assigned UUID to transfer.",
+                "eventDateTime": dates[0],
+                "eventOutcome1": "Success",
+            }
+        )
         return events
 
 
@@ -153,9 +164,30 @@ class SlvSipFactory:
     ## to do:
     # renaming
     # using existing factory functions
-    def build_sip(self, bag_uuid):
+    def build_sip(
+        self,
+        bag_uuid,
+        input_dir,
+        output_dir,
+        pres_master_dir,
+        sip_title,
+    ):
         events = self.compile_events(bag_uuid)
-        sip_builder.build_sip()
+        identifier = [
+            {
+                "objectIdentifierType": "transferBagUUID",
+                "objectIdentifierValue": bag_uuid,
+            }
+        ]
+        sip_builder.build_sip(
+            ie_dmd_dict={"dc:title": sip_title},
+            eventList=events,
+            input_dir=input_dir,
+            output_dir=output_dir,
+            pres_master_dir=pres_master_dir,
+            objectIdentifier=identifier,
+            sip_title=sip_title,
+        )
 
     def compile_events(self, bag_uuid):
         creator = ConcreteEventCreator()
@@ -171,7 +203,7 @@ class SlvSipFactory:
                 "transfer", bag_uuid, self.transfer_df
             )
             events.extend(transfer_events)
-
+        logging.debug(events)
         return events
 
     def move_rename_files(root_directory, mets_filename="mets.xml"):

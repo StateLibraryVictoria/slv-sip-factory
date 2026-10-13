@@ -126,4 +126,4 @@ def test_transfer_event_creator(transfer_df):
 def test_slv_sip_factory_compiles_events(transfer_df, big_validation_df):
     factory = SlvSipFactory(validation_df=big_validation_df, transfer_df=transfer_df)
     events = factory.compile_events(COMMON_BAG_UUID)
-    assert len(events) == 3
+    assert len(events) == 4
