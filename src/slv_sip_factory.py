@@ -5,6 +5,7 @@ import urllib.parse
 import shutil
 import logging
 from pathlib import PurePath
+from rosetta_sip_factory import sip_builder
 
 bagit_agent = "bagit.py <https://github.com/LibraryOfCongress/bagit-python>"
 
@@ -15,26 +16,21 @@ class EventCreator(ABC):
     def factory_method(self, uuid, df):
         pass
 
-    def build_events(self, uuid, df) -> str:
-        events = self.factory_method(uuid, df)
+    def build_events(self, type, uuid, df) -> str:
+        creator = self.factory_method(type, uuid, df)
+        events = creator.parse_events()
 
-        result = f"Creator parsed new event."
         return events
 
 
-class ConcreteCarrierImagingEventCreator(EventCreator):
-    def factory_method(self, uuid, df) -> DepositEvent:
-        return CarrierImagingEvent(uuid, df)
-
-
-class ConcreteValidationEventCreator(EventCreator):
-    def factory_method(self, uuid, df) -> DepositEvent:
-        return ValidationEvent(uuid, df)
-
-
-class ConcreteTransferEventCreator(EventCreator):
-    def factory_method(self, uuid, df) -> DepositEvent:
-        return TransferEvent(uuid, df)
+class ConcreteEventCreator(EventCreator):
+    def factory_method(self, type, uuid, df) -> DepositEvent:
+        if type == "validation":
+            return ValidationEvent(uuid, df)
+        elif type == "transfer":
+            return TransferEvent(uuid, df)
+        else:
+            logging.error(f"Event type not implemented: {type}")
 
 
 class DepositEvent(ABC):
@@ -150,11 +146,33 @@ class ValidationEvent(DepositEvent):
 
 
 class SlvSipFactory:
-    pass
+    def __init__(self, validation_df=None, transfer_df=None):
+        self.validation_df = validation_df
+        self.transfer_df = transfer_df
 
     ## to do:
     # renaming
     # using existing factory functions
+    def build_sip(self, bag_uuid):
+        events = self.compile_events(bag_uuid)
+        sip_builder.build_sip()
+
+    def compile_events(self, bag_uuid):
+        creator = ConcreteEventCreator()
+        events = []
+        if self.validation_df is not None:
+            validation_events = creator.build_events(
+                "validation", bag_uuid, self.validation_df
+            )
+            events.extend(validation_events)
+
+        if self.transfer_df is not None:
+            transfer_events = creator.build_events(
+                "transfer", bag_uuid, self.transfer_df
+            )
+            events.extend(transfer_events)
+
+        return events
 
     def move_rename_files(root_directory, mets_filename="mets.xml"):
         """A function that takes an existing SIP, checks for non-ascii filenames, creates a renamed

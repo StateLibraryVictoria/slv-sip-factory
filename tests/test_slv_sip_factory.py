@@ -1,16 +1,18 @@
 import pytest
 from src.slv_sip_factory import (
-    ConcreteValidationEventCreator,
-    ConcreteTransferEventCreator,
+    ConcreteEventCreator,
+    SlvSipFactory,
 )
 import pandas as pd
+
+COMMON_BAG_UUID = "8be4df61-93ca-11d2-aa0d-00e098032b8c"
 
 
 @pytest.fixture
 def validation_df():
     data = {
         "OutcomeIdentifier": [1],
-        "BagUUID": ["8be4df61-93ca-11d2-aa0d-00e098032b8c"],
+        "BagUUID": [COMMON_BAG_UUID],
         "Outcome": ["Pass"],
         "Errors": [""],
         "BagPath": ["\\\\path.location\\identifier\\t1"],
@@ -26,8 +28,8 @@ def big_validation_df():
     data = {
         "OutcomeIdentifier": [1, 2, 3],
         "BagUUID": [
-            "8be4df61-93ca-11d2-aa0d-00e098032b8c",
-            "8be4df61-93ca-11d2-aa0d-00e098032b8c",
+            COMMON_BAG_UUID,
+            COMMON_BAG_UUID,
             "8be4df61-93ca-11d2-aa0d-00e098032b8d",
         ],
         "Outcome": ["Pass", "Pass", "Pass"],
@@ -66,7 +68,7 @@ def transfer_df():
         "TransferTimeSeconds": ["952.262885"],
         "ContactName": ["JDoe"],
         "SourceOrganisation": ["State Library Victoria"],
-        "BagUUID": ["8be4df61-93ca-11d2-aa0d-00e098032b8c"],
+        "BagUUID": [COMMON_BAG_UUID],
         "PayloadOxum": ["22517139535.207"],
         "ManifestSHA256Hash": [
             "4b0afa46da6626d9258aacfe639aa9670bd7a06083e70f950ba64f50cf6ab4b7"
@@ -80,11 +82,8 @@ def transfer_df():
 
 
 def test_validation_event_creator(validation_df):
-    creator = ConcreteValidationEventCreator()
-    validation_event = creator.build_events(
-        "8be4df61-93ca-11d2-aa0d-00e098032b8c", validation_df
-    )
-    events = validation_event.parse_events()
+    creator = ConcreteEventCreator()
+    events = creator.build_events("validation", COMMON_BAG_UUID, validation_df)
     event = events[0]
     assert event.get("eventType") == "PRE-DEPOSIT"
     assert event.get("eventIdentifierValue") == "1"
@@ -97,11 +96,8 @@ def test_validation_event_creator(validation_df):
 
 
 def test_validation_event_creator_two_events(big_validation_df):
-    creator = ConcreteValidationEventCreator()
-    validation_event = creator.build_events(
-        "8be4df61-93ca-11d2-aa0d-00e098032b8c", big_validation_df
-    )
-    events = validation_event.parse_events()
+    creator = ConcreteEventCreator()
+    events = creator.build_events("validation", COMMON_BAG_UUID, big_validation_df)
     assert len(events) == 2
     event = events[1]
     assert event.get("eventType") == "PRE-DEPOSIT"
@@ -114,11 +110,8 @@ def test_validation_event_creator_two_events(big_validation_df):
 
 
 def test_transfer_event_creator(transfer_df):
-    creator = ConcreteTransferEventCreator()
-    transfer_event = creator.build_events(
-        "8be4df61-93ca-11d2-aa0d-00e098032b8c", transfer_df
-    )
-    events = transfer_event.parse_events()
+    creator = ConcreteEventCreator()
+    events = creator.build_events("transfer", COMMON_BAG_UUID, transfer_df)
     event = events[0]
     assert event.get("eventType") == "PRE-DEPOSIT"
     assert event.get("eventIdentifierValue") == "603"
@@ -128,3 +121,9 @@ def test_transfer_event_creator(transfer_df):
         event.get("eventOutcomeDetail1")
         == r"Files: 207, bytes: 22517139535, transferred by: JDoe, with collection id: ID-999-999. Resulted in folder: ID-999-999\t2. Transfer completed using: bagit.py <https://github.com/LibraryOfCongress/bagit-python>"
     )
+
+
+def test_slv_sip_factory_compiles_events(transfer_df, big_validation_df):
+    factory = SlvSipFactory(validation_df=big_validation_df, transfer_df=transfer_df)
+    events = factory.compile_events(COMMON_BAG_UUID)
+    assert len(events) == 3
