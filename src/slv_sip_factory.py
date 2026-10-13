@@ -6,6 +6,8 @@ import shutil
 import logging
 from pathlib import PurePath
 
+bagit_agent = "bagit.py <https://github.com/LibraryOfCongress/bagit-python>"
+
 
 class EventCreator(ABC):
 
@@ -28,6 +30,11 @@ class ConcreteCarrierImagingEventCreator(EventCreator):
 class ConcreteValidationEventCreator(EventCreator):
     def factory_method(self, uuid, df) -> DepositEvent:
         return ValidationEvent(uuid, df)
+
+
+class ConcreteTransferEventCreator(EventCreator):
+    def factory_method(self, uuid, df) -> DepositEvent:
+        return TransferEvent(uuid, df)
 
 
 class DepositEvent(ABC):
@@ -56,15 +63,28 @@ class DepositEvent(ABC):
         The list may contain any number of dictionaries. Each
         dictionary represents a separate event."""
 
+    def __init__(self, uuid, df):
+        self.uuid = uuid
+        self.df = df
+
     @abstractmethod
     def parse_events(self) -> list[dict]:
         pass
 
+    def normalise_events(self) -> None:
+        df = self.df
+        col_names = df.columns
+        if "Outcome" in col_names:
+            df["Outcome"] = df["Outcome"].replace("Pass", "Success")
+            df["Outcome"] = df["Outcome"].replace("Fail", "Failure")
+        if "Errors" in col_names:
+            df["Errors"] = df["Errors"].replace("", "No errors.")
+        for id in ["TransferID", "OutcomeIdentifier"]:
+            if id in col_names:
+                df[id] = df[id].astype(str)
+
 
 class CarrierImagingEvent(DepositEvent):
-    def __init__(self, uuid, df):
-        self.uuid = uuid
-        self.df = df
 
     def parse_events(self):
         logging.error("Carrier imaging event not implemented")
@@ -72,24 +92,40 @@ class CarrierImagingEvent(DepositEvent):
 
 
 class TransferEvent(DepositEvent):
-    def __init__(self, uuid, df):
-        self.uuid = uuid
-        self.df = df
 
     def parse_events(self):
+        self.normalise_events()
+        event_df = self.df.loc[self.df["BagUUID"] == self.uuid]
+        action_ids = event_df["TransferID"].to_list()
+        dates = event_df["EndTime"].to_list()
+        outcome_folder = event_df["OutcomeFolderTitle"].to_list()
+        collection_id = event_df["CollectionIdentifier"].to_list()
+        contact = event_df["ContactName"].to_list()
+        files = event_df["FileCount"].to_list()
+        bytes = event_df["Bytes"].to_list()
+        event_type = "PRE-DEPOSIT"
+        events = []
+        for i in range(len(action_ids)):
+            events.append(
+                {
+                    "eventType": event_type,
+                    "eventIdentifierType": "bagitWorkflowTransferOutcomeId",
+                    "eventIdentifierValue": action_ids[i],
+                    "eventDescription": f"Transferred to statecollectionstore.",
+                    "eventDateTime": dates[i],
+                    "eventOutcome1": "Success",
+                    "eventOutcomeDetail1": f"Files: {files[i]}, bytes: {bytes[i]}, transferred by: {contact[i]}, with collection id: {collection_id[i]}. Resulted in folder: {outcome_folder[i]}. Transfer completed using: {bagit_agent}",
+                }
+            )
         logging.error("Transfer events not implemented")
-        pass
+        return events
 
 
 class ValidationEvent(DepositEvent):
-    def __init__(self, uuid, df):
-        self.uuid = uuid
-        self.df = df
 
     def parse_events(self):
+        self.normalise_events()
         event_df = self.df.loc[self.df["BagUUID"] == self.uuid]
-        event_df["Errors"] = event_df["Errors"].replace("", "No errors.")
-        event_df["OutcomeIdentifier"] = event_df["OutcomeIdentifier"].astype(str)
         action_ids = event_df["OutcomeIdentifier"].to_list()
         outcome = event_df["Outcome"].to_list()
         errors = event_df["Errors"].to_list()
@@ -104,7 +140,7 @@ class ValidationEvent(DepositEvent):
                     "eventType": event_type,
                     "eventIdentifierType": "bagitWorkflowValidationOutcomeId",
                     "eventIdentifierValue": action_ids[i],
-                    "eventDescription": f"Bag integrity validated at path '{bag_path[i]}'",
+                    "eventDescription": f"Bag integrity validated at path '{bag_path[i]}' by {bagit_agent}",
                     "eventDateTime": end_time[i],
                     "eventOutcome1": outcome[i],
                     "eventOutcomeDetail1": errors[i],
