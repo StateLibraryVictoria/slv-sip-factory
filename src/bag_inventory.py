@@ -3,6 +3,7 @@ import os
 import platform
 from urllib.parse import unquote
 from time import strftime
+from pathlib import Path
 import logging
 
 
@@ -15,8 +16,9 @@ class BagInventory:
         unquote=False,
     ):
         self.df = df
-        self.prefix = ":".join(df["URI"][0].split(":")[1:])
-        self.root_dir = root_dir
+        self.prefix = self._get_prefix(df["URI"][0])
+        self.prefix = self._tidy_path(self.prefix)
+        self.root_dir = os.path.normpath(root_dir)
         self.allowed_systems = allowed_systems
         self.unquote = unquote
         self.has_archive_files = False
@@ -26,14 +28,23 @@ class BagInventory:
 
     def _update_paths(self):
         columns = len(self.df.columns)
-        df2 = self.df.URI.str.split(pat=":", n=1, expand=True)
+        df2 = self.df.URI.str.split(pat=":/", n=1, expand=True)
         df2.rename(columns={0: "CATEGORY", 1: "PATH"}, inplace=True)
         self.df.insert(columns, "CATEGORY", df2.CATEGORY)
         self.df.insert(columns + 1, "PATH", df2.PATH)
+        self.df.PATH = self.df.PATH.apply(os.path.normpath)
         self.df.PATH = self.df.PATH.str.replace(self.prefix, self.root_dir, regex=False)
         self.df.PATH = self.df.PATH.apply(os.path.normpath)
         if self.unquote:
             self.df.PATH.apply(unquote)
+
+    def _get_prefix(self, uri):
+        return uri.split(":/", 1)[1]
+
+    def _tidy_path(self, path):
+        path = os.path.normpath(path)
+        path = str(Path(path).resolve())
+        return path
 
     def _drop_archive_contents(self, pattern="iso|zip|tar|gzip"):
         size = self.df.size
