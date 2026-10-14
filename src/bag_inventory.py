@@ -11,10 +11,19 @@ class BagInventory:
     def __init__(
         self,
         df: pd.DataFrame,
-        root_dir="",
-        allowed_systems=["alma", "archivesspace"],
-        unquote=False,
+        root_dir: str = "",
+        allowed_systems: list = ["alma", "archivesspace"],
+        unquote: bool = False,
     ):
+        """
+        Builds an inventory of description and decisions which can be output as JSON.
+
+        Keyworkd arguments:
+        df -- Pandas DataFrame containing DROID report with added columns for description and decisions.
+        root_dir -- the root directory desired for the output filepaths. (default "")
+        allowed_systems -- list of systems where identifiers may be valid. Used for validation. (default ["alma", "archivesspace"])
+        unquote -- set to True to process unicode characters rather than html encoded. (default False)
+        """
         self.df = df
         self.prefix = self._get_prefix(df["URI"][0])
         self.prefix = self._tidy_path(self.prefix)
