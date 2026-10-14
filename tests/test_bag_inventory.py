@@ -17,11 +17,11 @@ def valid_input_data(tmpdir) -> dict:
             f.write("test")
     return {
         "URI": [
-            f"file:{tmpdir}",
-            f"file:{folder}",
-            f"file:{empty_folder}",
-            f"file:{retain_file}",
-            f"file:{dispose_file}",
+            f"file:/{tmpdir}",
+            f"file:/{folder}",
+            f"file:/{empty_folder}",
+            f"file:/{retain_file}",
+            f"file:/{dispose_file}",
         ],
         "TYPE": ["Folder", "Folder", "Folder", "File", "File"],
         "DECISION": ["", "", "", "retain-state-collection", "dispose"],
@@ -44,12 +44,12 @@ def valid_input_with_iso(tmpdir) -> dict:
             f.write("test")
     return {
         "URI": [
-            f"file:{tmpdir}",
-            f"file:{folder}",
-            f"file:{empty_folder}",
-            f"file:{retain_file}",
-            f"iso:file:{retain_file}!/internalfile.txt",
-            f"file:{dispose_file}",
+            f"file:/{tmpdir}",
+            f"file:/{folder}",
+            f"file:/{empty_folder}",
+            f"file:/{retain_file}",
+            f"iso:file:/{retain_file}!/internalfile.txt",
+            f"file:/{dispose_file}",
         ],
         "TYPE": ["Folder", "Folder", "Folder", "Container", "File", "File"],
         "DECISION": [
@@ -69,7 +69,7 @@ def valid_input_with_iso(tmpdir) -> dict:
 @pytest.fixture
 def valid_bag_inventory(valid_input_data) -> BagInventory:
     df = pd.DataFrame.from_dict(valid_input_data)
-    bi = BagInventory(df, "data\\")
+    bi = BagInventory(df, "data")
     return bi
 
 
@@ -87,40 +87,40 @@ def invalid_bag_inventory(valid_input_data) -> BagInventory:
 def invalid_bag_inventory_ark_against_not_state_collection(
     valid_input_data, tmpdir
 ) -> BagInventory:
-    valid_input_data["URI"].append(f"file:{tmpdir}\\folder\\text3.txt")
+    valid_input_data["URI"].append(f"file:/{tmpdir}/folder/text3.txt")
     valid_input_data["TYPE"].append("File")
     valid_input_data["DECISION"].append("retain-record")
     valid_input_data["REASON"].append("Not selected")
     valid_input_data["SYSTEM"].append("ArchivesSpace")
     valid_input_data["SYSTEM_ID"].append("12345")
     df = pd.DataFrame.from_dict(valid_input_data)
-    bi = BagInventory(df, "data\\")
+    bi = BagInventory(df, "data/")
     return bi
 
 
 @pytest.fixture
 def valid_bag_inventory_with_check(valid_input_data, tmpdir) -> BagInventory:
-    valid_input_data["URI"].append(f"file:{tmpdir}\\folder\\text3.txt")
+    valid_input_data["URI"].append(f"file:/{tmpdir}/folder/text3.txt")
     valid_input_data["TYPE"].append("File")
     valid_input_data["DECISION"].append("check")
     valid_input_data["REASON"].append("Not described")
     valid_input_data["SYSTEM"].append("")
     valid_input_data["SYSTEM_ID"].append("")
     df = pd.DataFrame.from_dict(valid_input_data)
-    bi = BagInventory(df, "data\\")
+    bi = BagInventory(df, "data/")
     return bi
 
 
 @pytest.fixture
 def valid_bag_inventory_two_files_same_id(valid_input_data, tmpdir) -> BagInventory:
-    valid_input_data["URI"].append(f"file:{tmpdir}\\folder\\text3.txt")
+    valid_input_data["URI"].append(f"file:/{tmpdir}/folder/text3.txt")
     valid_input_data["TYPE"].append("File")
     valid_input_data["DECISION"].append("retain-state-collection")
     valid_input_data["REASON"].append("")
     valid_input_data["SYSTEM"].append("ArchivesSpace")
     valid_input_data["SYSTEM_ID"].append("12345")
     df = pd.DataFrame.from_dict(valid_input_data)
-    bi = BagInventory(df, "data\\")
+    bi = BagInventory(df, "data/")
     return bi
 
 
