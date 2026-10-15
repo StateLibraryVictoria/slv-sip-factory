@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import platform
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 from time import strftime
 from pathlib import Path
 import logging
@@ -25,39 +25,32 @@ class BagInventory:
         unquote -- set to True to process unicode characters rather than html encoded. (default False)
         """
         self.df = df
-        self.prefix = self._get_prefix(df["URI"][0])
-        self.prefix = self._tidy_path(self.prefix)
         self.root_dir = os.path.normpath(root_dir)
         self.allowed_systems = allowed_systems
         self.unquote = unquote
         self.has_archive_files = False
-        self._update_paths()
         self._drop_archive_contents()
+        self._update_paths()
         self._normalise_system_fields()
+        self.prefix = None
 
     def _update_paths(self):
         columns = len(self.df.columns)
-        df2 = self.df.URI.str.split(pat=":/", n=1, expand=True)
-        df2.rename(columns={0: "CATEGORY", 1: "PATH"}, inplace=True)
-        self.df.insert(columns, "CATEGORY", df2.CATEGORY)
-        self.df.insert(columns + 1, "PATH", df2.PATH)
-        self.df.PATH = self.df.PATH.apply(os.path.normpath)
+        self.df["PATH"] = self.df.URI.apply(lambda x: urlparse(x).path)
+        self.df.PATH = self.df.PATH.apply(self._tidy_path)
+        if unquote:
+            self.df.PATH = self.df.PATH.apply(unquote)
+        self.prefix = self.df.PATH[0]
         self.df.PATH = self.df.PATH.str.replace(self.prefix, self.root_dir, regex=False)
-        self.df.PATH = self.df.PATH.apply(os.path.normpath)
-        if self.unquote:
-            self.df.PATH.apply(unquote)
-
-    def _get_prefix(self, uri):
-        return uri.split(":/", 1)[1]
 
     def _tidy_path(self, path):
         path = os.path.normpath(path)
         path = str(Path(path).resolve())
         return path
 
-    def _drop_archive_contents(self, pattern="iso|zip|tar|gzip"):
+    def _drop_archive_contents(self, pattern=("iso", "zip", "tar", "gzip")):
         size = self.df.size
-        self.df = self.df[~self.df.CATEGORY.str.contains(pattern)]
+        self.df = self.df[~self.df.URI.str.startswith(pattern)]
         dropped_size = self.df.size
         self.has_archive_files = size > dropped_size
 
