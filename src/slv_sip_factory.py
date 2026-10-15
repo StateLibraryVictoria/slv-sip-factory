@@ -5,9 +5,41 @@ import urllib.parse
 import shutil
 import logging
 from pathlib import PurePath
+import json
 from rosetta_sip_factory import sip_builder
+from src.sip_json_factory import JsonInventory
+import errno
 
 bagit_agent = "bagit.py <https://github.com/LibraryOfCongress/bagit-python>"
+
+
+def _move_files_from_json_fix(json_doc, streams_dir):
+    if type(json_doc) == str:
+        rep_dict = json.loads(json_doc)
+    else:
+        rep_dict = json_doc
+    for item in rep_dict:
+        origin = item["physical_path"]
+        destination = item["fileOriginalPath"]
+        destination_dir = os.path.dirname(destination)
+        logging.error(destination_dir)
+        if destination_dir == "\\":
+            outpath = streams_dir
+            logging.error("matches")
+        else:
+            outpath = os.path.join(streams_dir, destination_dir)
+            logging.error("doesn't match")
+        logging.error(outpath)
+        if not os.path.exists(outpath):
+            try:
+                os.makedirs(outpath)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno is not errno.EEXIST:
+                    raise
+        shutil.copy2(origin, outpath)
+
+
+sip_builder._move_files_from_json = _move_files_from_json_fix
 
 
 class EventCreator(ABC):
@@ -180,7 +212,7 @@ class SlvSipFactory:
             }
         ]
         sip_builder.build_sip(
-            ie_dmd_dict={"dc:title": sip_title},
+            ie_dmd_dict=[{"dc:title": sip_title}],
             eventList=events,
             input_dir=input_dir,
             output_dir=output_dir,
@@ -188,6 +220,50 @@ class SlvSipFactory:
             objectIdentifier=identifier,
             sip_title=sip_title,
         )
+
+    def build_sip_from_json(
+        self,
+        bag_uuid,
+        input_dir,
+        output_dir,
+        sip_title,
+        transfer_manifest,
+    ):
+        j = JsonInventory(transfer_manifest, input_dir)
+        events = self.compile_events(bag_uuid)
+
+        json_dict = j.build_rosetta_json()
+        json_list = json_dict.get("json")
+        id_list = json_dict.get("record_ids")
+        bag_info = j.load_bag_info()
+        description = bag_info.get("External-Description")[0]
+        date_submitted = bag_info.get("Bagging-Date")[0]
+        is_part_of = bag_info.get("Internal-Sender-Identifier")[0]
+        base_dc = {
+            "dc:description": description,
+            "dc:dateSubmitted": date_submitted,
+            "dc:isPartOf": is_part_of,
+        }
+        for i in range(len(json_list)):
+            identifier = [
+                {
+                    "objectIdentifierType": "record_id",
+                    "objectIdentifierValue": id_list[i],
+                }
+            ]
+            transfer_dir = os.path.join(output_dir, f"transfer_{i+1}")
+            os.mkdir(transfer_dir)
+            dc = base_dc.copy()
+            dc.update({"dc:identifier": id_list[i]})
+            record_data = json_list[i]
+            sip_builder.build_sip_from_json(
+                ie_dmd_dict=[dc],
+                pres_master_json=record_data,
+                eventList=events,
+                objectIdentifier=identifier,
+                output_dir=transfer_dir,
+                sip_title=sip_title,
+            )
 
     def compile_events(self, bag_uuid):
         creator = ConcreteEventCreator()
