@@ -30,7 +30,11 @@ class JsonInventory(BagInventory):
         self.is_bag = is_bag
         self.checksums = self.load_file_checksums()
 
-    def build_rosetta_json(self) -> list[str]:
+    def build_rosetta_json(self) -> dict:
+        """Returns lists of json and system information.
+
+        Returns dict with keys 'json' and 'record_ids' containing lists of respective values
+        """
         # one record per IE
         json_list = []
         if not "SYSTEM" in self.df.columns and not "SYSTEM_ID" in self.df.columns:
@@ -38,7 +42,6 @@ class JsonInventory(BagInventory):
         state_coll_df = self.df[self.df["DECISION"] == "retain-state-collection"]
         # drop things that aren't files as Rosetta can't handle them.
         state_coll_df = state_coll_df[state_coll_df["TYPE"] == "File"]
-        logging.error(state_coll_df["PATH"].to_list())
         logging.info(f"Processing {state_coll_df.count} records")
         unique_ids = list(set(state_coll_df["SYSTEM_ID"].to_list()))
         logging.info(f"Processing {len(unique_ids)} records into individual IEs")
@@ -46,7 +49,8 @@ class JsonInventory(BagInventory):
             working_df = state_coll_df[state_coll_df["SYSTEM_ID"] == id]
             data = self.build_representation(working_df)
             json_list.append(data)
-        return json_list
+        rosetta_data = {"json": json_list, "record_ids": unique_ids}
+        return rosetta_data
 
     def build_representation(self, df: pd.DataFrame) -> str:
         """
@@ -100,7 +104,7 @@ class JsonInventory(BagInventory):
             self.normalise_timestamp_date
         )
         df["MD5"] = df["fileOriginalPath"].apply(self.get_md5)
-        df["fileSizeBytes"] = df["SIZE"]
+        df["fileSizeBytes"] = df["SIZE"].astype(str)
         return df
 
     def normalise_physical_path(self, path: str) -> str:
