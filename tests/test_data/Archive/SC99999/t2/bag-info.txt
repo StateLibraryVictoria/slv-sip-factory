@@ -1,0 +1,8 @@
+Bag-Software-Agent: bagit.py v1.9.0 <https://github.com/LibraryOfCongress/bagit-python>
+Bagging-Date: 2026-10-14
+Contact-Name: SBourke
+External-Description: SC99999_A_sip_with_hierarchy_20240430
+External-Identifier: SC99999
+Internal-Sender-Identifier: 7fc12852-05ff-4405-abef-459d24aaa6aa
+Payload-Oxum: 0.6
+Source-Organization: State Library Victoria

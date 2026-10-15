@@ -1,0 +1,6 @@
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/ascii_folder/an_example_file.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/multi_level_folder/קובץ מחשב לדוגמה.doc
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/multi_level_folder/level_2/یک نمونه فایل کامپیوتری.xlsx
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/multi_level_folder/level_2/计算机文件示例.doc
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/👪/holiday2003.jpg
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  data/👪/😂😂😂.msg

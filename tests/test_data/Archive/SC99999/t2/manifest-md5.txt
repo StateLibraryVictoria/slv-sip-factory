@@ -1,0 +1,6 @@
+d41d8cd98f00b204e9800998ecf8427e  data/ascii_folder/an_example_file.txt
+d41d8cd98f00b204e9800998ecf8427e  data/multi_level_folder/קובץ מחשב לדוגמה.doc
+d41d8cd98f00b204e9800998ecf8427e  data/multi_level_folder/level_2/یک نمونه فایل کامپیوتری.xlsx
+d41d8cd98f00b204e9800998ecf8427e  data/multi_level_folder/level_2/计算机文件示例.doc
+d41d8cd98f00b204e9800998ecf8427e  data/👪/holiday2003.jpg
+d41d8cd98f00b204e9800998ecf8427e  data/👪/😂😂😂.msg

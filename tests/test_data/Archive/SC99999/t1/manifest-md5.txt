@@ -1,0 +1,4 @@
+d41d8cd98f00b204e9800998ecf8427e  data/קובץ מחשב לדוגמה.doc
+d41d8cd98f00b204e9800998ecf8427e  data/یک نمونه فایل کامپیوتری.xlsx
+d41d8cd98f00b204e9800998ecf8427e  data/计算机文件示例.doc
+d41d8cd98f00b204e9800998ecf8427e  data/😂😂😂.msg
