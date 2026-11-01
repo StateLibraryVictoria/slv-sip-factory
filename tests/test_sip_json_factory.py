@@ -1,8 +1,6 @@
 from src.sip_json_factory import JsonInventory
 import json
 import os
-import logging
-from urllib.parse import unquote
 import pytest
 
 
@@ -55,10 +53,10 @@ def test_update_rosetta_paths_has_expected_columns(
 
 
 def test_generate_inventory_retains_correct_original_path(json_inventory):
-    json_data = json_inventory.build_rosetta_json()
+    json_data = json_inventory.build_rosetta_json().get("json")
     json_data.sort()
     expected = "\\😂😂😂.msg"
-    result = json.loads(json_data[4])[0]
+    result = json.loads(json_data[3])[0]
     result = result.get("fileOriginalPath")
     assert result == expected
 
@@ -89,7 +87,7 @@ def test_build_rosetta_json_multiark_sip_has_record_for_each_file(
 ):
     report = report_for_transfer_1_multiple_arks
     j = JsonInventory(report, root_dir=SC_transfer_1)
-    json = j.build_rosetta_json()
+    json = j.build_rosetta_json().get("json")
     files = report["TYPE"].loc[lambda x: x == "File"].to_list()
     expected = len(files)
     result = len(json)
@@ -101,7 +99,7 @@ def test_build_rosetta_json_single_ark_sip_has_one_record(
 ):
     report = report_for_transfer_1_one_ark
     j = JsonInventory(report, root_dir=SC_transfer_1)
-    json = j.build_rosetta_json()
+    json = j.build_rosetta_json().get("json")
     expected = 1
     result = len(json)
     assert result == expected
