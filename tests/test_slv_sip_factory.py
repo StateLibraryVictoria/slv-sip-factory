@@ -1,84 +1,11 @@
 import pytest
+import os
 from src.slv_sip_factory import (
     ConcreteEventCreator,
     SlvSipFactory,
 )
 import pandas as pd
-
-COMMON_BAG_UUID = "8be4df61-93ca-11d2-aa0d-00e098032b8c"
-
-
-@pytest.fixture
-def validation_df():
-    data = {
-        "OutcomeIdentifier": [1],
-        "BagUUID": [COMMON_BAG_UUID],
-        "Outcome": ["Pass"],
-        "Errors": [""],
-        "BagPath": ["\\\\path.location\\identifier\\t1"],
-        "StartTime": ["2025-07-08 10:20:38.380232"],
-        "EndTime": ["2025-07-08 10:21:38.380232"],
-    }
-    df = pd.DataFrame.from_dict(data)
-    return df
-
-
-@pytest.fixture
-def big_validation_df():
-    data = {
-        "OutcomeIdentifier": [1, 2, 3],
-        "BagUUID": [
-            COMMON_BAG_UUID,
-            COMMON_BAG_UUID,
-            "8be4df61-93ca-11d2-aa0d-00e098032b8d",
-        ],
-        "Outcome": ["Pass", "Pass", "Pass"],
-        "Errors": ["", "", ""],
-        "BagPath": [
-            "\\\\path.location\\identifier\\t1",
-            "\\\\path.location\\identifier\\t1",
-            "\\\\path.location\\identifier\\t1",
-        ],
-        "StartTime": [
-            "2025-07-08 10:20:38.380232",
-            "2025-07-09 10:20:38.380232",
-            "2025-07-10 10:20:38.380232",
-        ],
-        "EndTime": [
-            "2025-07-08 10:21:38.380232",
-            "2025-07-09 10:21:38.380232",
-            "2025-07-10 10:21:38.380232",
-        ],
-    }
-    df = pd.DataFrame.from_dict(data)
-    return df
-
-
-@pytest.fixture
-def transfer_df():
-    data = {
-        "TransferID": [603],
-        "TransferDate": ["2026-09-10"],
-        "BagDate": ["2026-09-10"],
-        "CollectionIdentifier": ["ID-999-999"],
-        "Size": ["20.971 GiB"],
-        "FileCount": ["207"],
-        "OutcomeFolderTitle": ["ID-999-999\\t2"],
-        "OriginalFolderTitle": ["ID-999-999_TestTransfer_20260910"],
-        "TransferTimeSeconds": ["952.262885"],
-        "ContactName": ["JDoe"],
-        "SourceOrganisation": ["State Library Victoria"],
-        "BagUUID": [COMMON_BAG_UUID],
-        "PayloadOxum": ["22517139535.207"],
-        "ManifestSHA256Hash": [
-            "4b0afa46da6626d9258aacfe639aa9670bd7a06083e70f950ba64f50cf6ab4b7"
-        ],
-        "StartTime": ["2026-09-10 08:43:54.470389"],
-        "EndTime": ["2026-09-10 08:59:46.733274"],
-        "Bytes": ["22517139535"],
-    }
-    df = pd.DataFrame.from_dict(data)
-    return df
+from conftest import COMMON_BAG_UUID
 
 
 def test_validation_event_creator(validation_df):
@@ -127,3 +54,48 @@ def test_slv_sip_factory_compiles_events(transfer_df, big_validation_df):
     factory = SlvSipFactory(validation_df=big_validation_df, transfer_df=transfer_df)
     events = factory.compile_events(COMMON_BAG_UUID)
     assert len(events) == 4
+
+
+def test_slv_sip_factory_creates_sips_from_json_multi_ark(
+    report_for_transfer_1_multiple_arks,
+    SC_transfer_1,
+    tmp_path,
+    transfer_df,
+    big_validation_df,
+):
+    uuid = "f4ac41a5-49ef-4cbb-9aa1-e3935efd8ec0"
+    factory = SlvSipFactory(validation_df=big_validation_df, transfer_df=transfer_df)
+    output_dir = tmp_path / "folder"
+    output_dir.mkdir()
+    print(output_dir)
+    factory.build_sip_from_json(
+        bag_uuid=uuid,
+        input_dir=SC_transfer_1,
+        output_dir=output_dir,
+        sip_title="test-sip",
+        transfer_manifest=report_for_transfer_1_multiple_arks,
+    )
+    transfer_count = len(os.listdir(output_dir))
+    assert transfer_count == 4
+
+
+def test_slv_sip_factory_creates_sip_from_json(
+    report_for_transfer_1_one_ark,
+    SC_transfer_1,
+    tmp_path,
+    transfer_df,
+    big_validation_df,
+):
+    uuid = "f4ac41a5-49ef-4cbb-9aa1-e3935efd8ec0"
+    factory = SlvSipFactory(validation_df=big_validation_df, transfer_df=transfer_df)
+    output_dir = tmp_path / "folder"
+    output_dir.mkdir()
+    factory.build_sip_from_json(
+        bag_uuid=uuid,
+        input_dir=SC_transfer_1,
+        output_dir=output_dir,
+        sip_title="test-sip",
+        transfer_manifest=report_for_transfer_1_one_ark,
+    )
+    transfer_count = len(os.listdir(output_dir))
+    assert transfer_count == 1
