@@ -77,6 +77,13 @@ def test_slv_sip_factory_creates_sips_from_json_multi_ark(
     )
     transfer_count = len(os.listdir(output_dir))
     assert transfer_count == 4
+    transfer_out = os.listdir(output_dir)[0]
+    manifest = os.path.join(output_dir, transfer_out, "content", "mets.xml")
+    assert os.path.exists(manifest)
+    data_files = os.listdir(
+        os.path.join(output_dir, transfer_out, "content", "streams")
+    )
+    assert len(data_files) == 1
 
 
 def test_slv_sip_factory_creates_sip_from_json(
@@ -99,3 +106,10 @@ def test_slv_sip_factory_creates_sip_from_json(
     )
     transfer_count = len(os.listdir(output_dir))
     assert transfer_count == 1
+    transfer_out = os.listdir(output_dir)[0]
+    manifest = os.path.join(output_dir, transfer_out, "content", "mets.xml")
+    assert os.path.exists(manifest)
+    data_files = os.listdir(
+        os.path.join(output_dir, transfer_out, "content", "streams")
+    )
+    assert len(data_files) == 4
