@@ -24,10 +24,13 @@ def _move_files_from_json_fix(json_doc, streams_dir):
     for item in rep_dict:
         origin = item["physical_path"]
         destination = item["fileOriginalPath"]
-        destination_dir = os.path.dirname(destination)
+        # this is a horrible hack
+        destination_dir = destination.split("\\")
+        destination_dir = "\\".join(destination_dir[1:-1])
         if destination_dir == "\\":
             outpath = streams_dir
         else:
+            destination_dir = os.path.normpath(destination_dir)
             outpath = os.path.join(streams_dir, destination_dir)
         if not os.path.exists(outpath):
             try:
