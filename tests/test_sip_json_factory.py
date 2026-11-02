@@ -36,6 +36,7 @@ def test_update_rosetta_paths_has_expected_columns(
 ):
     j = JsonInventory(report_for_transfer_1_one_ark, root_dir=SC_transfer_1)
     df = j.update_rosetta_paths(j.df)
+    df = j.get_file_information(df)
     expected_columns = [
         "physical_path",
         "fileOriginalName",
@@ -50,6 +51,35 @@ def test_update_rosetta_paths_has_expected_columns(
     columns = list(df.columns)
     for c in expected_columns:
         assert c in columns
+
+
+def test_update_rosetta_paths_has_expected_original_paths(
+    SC_transfer_2, report_for_transfer_2_one_id
+):
+    j = JsonInventory(report_for_transfer_2_one_id, root_dir=SC_transfer_2)
+    df = j.update_rosetta_paths(j.df)
+    paths = df["fileOriginalPath"].to_list()
+    expected = [
+        "\\multi_level_folder\\level_2\\یک نمونه فایل کامپیوتری.xlsx",
+        "\\multi_level_folder\\level_2\\计算机文件示例.doc",
+        "\\multi_level_folder\\קובץ מחשב לדוגמה.doc",
+        "\\👪",
+        "\\👪\\holiday2003.jpg",
+        "\\👪\\😂😂😂.msg",
+    ]
+    for i in expected:
+        assert i in paths
+
+
+def test_update_rosetta_paths_has_expected_physical_paths(
+    SC_transfer_2, report_for_transfer_2_one_id
+):
+    j = JsonInventory(report_for_transfer_2_one_id, root_dir=SC_transfer_2)
+    df = j.update_rosetta_paths(j.df)
+    paths = df["physical_path"].to_list()
+    print(paths)
+    for p in paths:
+        assert os.path.exists(p)
 
 
 def test_generate_inventory_retains_correct_original_path(json_inventory):
