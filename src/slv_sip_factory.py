@@ -223,7 +223,7 @@ class SlvSipFactory:
             sip_title=sip_title,
         )
 
-    def build_sip_from_json(
+    def build_sip_from_manifest(
         self,
         bag_uuid,
         input_dir,
