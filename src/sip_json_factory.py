@@ -66,6 +66,7 @@ class JsonInventory(BagInventory):
         - note
         """
         df = self.update_rosetta_paths(df)
+        df = self.get_file_information(df)
         # drop unneeded columns
         required = [
             "physical_path",
@@ -94,6 +95,9 @@ class JsonInventory(BagInventory):
         df["physical_path"] = df["PATH"].apply(self._tidy_path)
         df["fileOriginalName"] = df["PATH"].apply(self.normalise_file_original_name)
         df["fileOriginalPath"] = df["PATH"].str.replace(self.root_dir, "")
+        return df
+
+    def get_file_information(self, df: pd.DataFrame):
         df["stat"] = df["physical_path"].apply(os.stat)
         df["fileCreationDate"] = df["stat"].apply(lambda x: x.st_birthtime)
         df["fileCreationDate"] = df["fileCreationDate"].apply(
