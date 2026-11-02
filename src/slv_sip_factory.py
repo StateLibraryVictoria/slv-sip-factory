@@ -14,6 +14,9 @@ bagit_agent = "bagit.py <https://github.com/LibraryOfCongress/bagit-python>"
 
 
 def _move_files_from_json_fix(json_doc, streams_dir):
+    """Bug in sip_builder._move_files_from_json means that files at the
+    root of the SIP are lost due to behaviour of os.path.join when the final
+    path part is '\\'"""
     if type(json_doc) == str:
         rep_dict = json.loads(json_doc)
     else:
@@ -22,14 +25,10 @@ def _move_files_from_json_fix(json_doc, streams_dir):
         origin = item["physical_path"]
         destination = item["fileOriginalPath"]
         destination_dir = os.path.dirname(destination)
-        logging.error(destination_dir)
         if destination_dir == "\\":
             outpath = streams_dir
-            logging.error("matches")
         else:
             outpath = os.path.join(streams_dir, destination_dir)
-            logging.error("doesn't match")
-        logging.error(outpath)
         if not os.path.exists(outpath):
             try:
                 os.makedirs(outpath)
