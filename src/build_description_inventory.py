@@ -3,17 +3,11 @@ import argparse
 import logging
 import json
 import pandas as pd
-from urllib.parse import unquote
-from time import strftime
 from src.bag_inventory import BagInventory
-from src.helper_functions import configure_logging
 
 output_path = os.getenv("OUTPUT_PATH")
 input_path = os.getenv("INPUT_PATH")
 decode_uri = True
-logfile_name = os.path.join(
-    output_path, f"record_appraisal_outcomes_{strftime('%Y%m%d%H%M%S')}.log"
-)
 
 
 def build_description_inventory_json(df: pd.DataFrame, creator: str, process: str):
@@ -49,7 +43,6 @@ def main():
         debug_status = parser.parse_args()
         return debug_status.debug
 
-    configure_logging(logfile_name, is_debugging())
     logging.debug("Running")
     files = [x for x in os.listdir(input_path) if x.endswith(".csv")]
     if len(files) == 0:
