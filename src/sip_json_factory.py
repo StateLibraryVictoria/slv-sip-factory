@@ -1,11 +1,9 @@
 import logging
 import pandas as pd
 from src.bag_inventory import BagInventory
-from abc import ABC, abstractmethod
 from urllib.parse import unquote
-from datetime import datetime, timezone
+from datetime import datetime
 import os
-import json
 
 
 class JsonInventory(BagInventory):
@@ -93,7 +91,7 @@ class JsonInventory(BagInventory):
         df["PATH"] = df["PATH"].apply(unquote)
         df["PATH"] = df["PATH"].apply(os.path.normpath)
         df["physical_path"] = df["PATH"].apply(self._tidy_path)
-        df["fileOriginalName"] = df["PATH"].apply(self.normalise_file_original_name)
+        df["fileOriginalName"] = df["PATH"].apply(self._normalise_file_original_name)
         df["fileOriginalPath"] = df["PATH"].str.replace(self.root_dir, "")
         return df
 
@@ -101,30 +99,30 @@ class JsonInventory(BagInventory):
         df["stat"] = df["physical_path"].apply(os.stat)
         df["fileCreationDate"] = df["stat"].apply(lambda x: x.st_birthtime)
         df["fileCreationDate"] = df["fileCreationDate"].apply(
-            self.normalise_timestamp_date
+            self._normalise_timestamp_date
         )
         df["fileModificationDate"] = df["stat"].apply(lambda x: x.st_mtime)
         df["fileModificationDate"] = df["fileModificationDate"].apply(
-            self.normalise_timestamp_date
+            self._normalise_timestamp_date
         )
-        df["MD5"] = df["fileOriginalPath"].apply(self.get_md5)
+        df["MD5"] = df["fileOriginalPath"].apply(self._get_md5)
         df["fileSizeBytes"] = df["SIZE"].astype(str)
         return df
 
-    def normalise_physical_path(self, path: str) -> str:
+    def _normalise_physical_path(self, path: str) -> str:
         "Normalise and update volume letter to match DROID reports."
         return self._tidy_path(path)
 
-    def normalise_file_original_name(self, path: str) -> str:
+    def _normalise_file_original_name(self, path: str) -> str:
         return os.path.basename(path)
 
-    def normalise_file_original_path(self, path: str, data_path: str) -> str:
+    def _normalise_file_original_path(self, path: str, data_path: str) -> str:
         return path.replace(data_path, "")
 
-    def normalise_timestamp_date(self, date: str) -> str:
+    def _normalise_timestamp_date(self, date: str) -> str:
         return datetime.fromtimestamp(date).strftime("%Y-%m-%dT%H:%M:%S")
 
-    def get_md5(self, x: str) -> str:
+    def _get_md5(self, x: str) -> str:
         return self.checksums.get(x)
 
     def load_bag_info(self) -> dict:

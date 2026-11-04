@@ -94,13 +94,13 @@ def test_generate_inventory_retains_correct_original_path(json_inventory):
 def test_normalise_physical_path_capitalises_location(json_inventory):
     p = os.getcwd()
     expected = p[0].capitalize() + p[1:]
-    result = json_inventory.normalise_physical_path(p)
+    result = json_inventory._normalise_physical_path(p)
     assert result == expected
 
 
 def test_noramlise_physical_path_is_path_that_exists(json_inventory):
     p = os.getcwd()
-    result = json_inventory.normalise_physical_path(p)
+    result = json_inventory._normalise_physical_path(p)
     assert os.path.exists(result)
 
 
@@ -108,7 +108,7 @@ def test_noramlise_physical_path_is_path_that_exists(json_inventory):
 def test_normalise_physical_path_works_for_files(json_inventory, tmp_path, filename):
     f = tmp_path / filename
     f.write_text("test", encoding="utf-8")
-    result = json_inventory.normalise_physical_path(f)
+    result = json_inventory._normalise_physical_path(f)
     assert os.path.exists(result)
 
 
