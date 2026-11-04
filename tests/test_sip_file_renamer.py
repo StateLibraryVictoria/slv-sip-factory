@@ -15,6 +15,23 @@ output_renamed_path = os.path.join("tests", "test_data", "output_renamed")
 percent_encoding_path = os.path.join("tests", "test_data", "percent_encoding")
 
 
+@pytest.fixture
+def percent_encoding_sip(tmp_path):
+    test_data = os.path.join("tests", "test_data", "percent_encoding")
+    output_dir = tmp_path / "percent_encoding"
+    ie_dc_dict = {"dc:title": "percent encoded SIP"}
+    sb.build_sip(
+        ie_dmd_dict=ie_dc_dict,
+        pres_master_dir=test_data,
+        input_dir=test_data,
+        generalIECharacteristics=[
+            {"submissionReason": "bornDigitalContent", "IEEntityType": "periodicIE"}
+        ],
+        output_dir=output_dir,
+    )
+    return output_dir
+
+
 ### Refactor to use TMP instead of Output folder.
 @pytest.fixture
 def sip_with_hierarchy(tmp_path):
@@ -193,25 +210,9 @@ def test_all_files_are_in_both_locations(staged_sip_with_hierarchy):
     assert numInput == numOutput
 
 
-def test_percent_encoding_for_ascii_filenames():
-    input_dir = percent_encoding_path
-    output_dir = os.path.join("tests", "test_data", "percent_output")
-    title = "Test percent encoding"
+def test_percent_encoding_for_ascii_filenames(percent_encoding_sip):
+    output_dir = percent_encoding_sip
 
-    # first off, delete anything that's in the output folder
-    if os.path.exists(output_dir):
-        shutil.rmtree(output_dir)
-        os.makedirs(output_dir)
-    ie_dc_dict = {"dc:title": title}
-    sb.build_sip(
-        ie_dmd_dict=ie_dc_dict,
-        pres_master_dir=input_dir,
-        input_dir=input_dir,
-        generalIECharacteristics=[
-            {"submissionReason": "bornDigitalContent", "IEEntityType": "periodicIE"}
-        ],
-        output_dir=output_dir,
-    )
     move_rename_files(output_dir)
     mets_file = os.path.join(output_dir, "content", "mets.xml")
     mets = ET.parse(mets_file)
